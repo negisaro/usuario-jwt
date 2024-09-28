@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nelson.usario.model.entity.Product;
 import com.nelson.usario.model.service.ProductService;
 
-// import com.andres.curso.springboot.app.springbootcrud.ProductValidation;
+
 
 import jakarta.validation.Valid;
 
@@ -40,7 +40,7 @@ public class ProductController {
 		return service.findAll();
 	}
 
-	@GetMapping("/{id}")	
+	@GetMapping("/{id}")
 	public ResponseEntity<?> view(@PathVariable Long id) {
 		Optional<Product> productOptional = service.findById(id);
 		if (productOptional.isPresent()) {
@@ -49,7 +49,7 @@ public class ProductController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@PostMapping
+	@PostMapping("/create")
 	public ResponseEntity<?> create(@Valid @RequestBody Product product, BindingResult result) {
 		// valdation.validate(product, result);
 		if (result.hasFieldErrors()) {

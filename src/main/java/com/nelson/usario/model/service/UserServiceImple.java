@@ -69,5 +69,15 @@ public class UserServiceImple implements UserService {
 	public Optional<Usuario> findById(@NonNull Long id) {
 		return usuarioDao.findById(id);
 	}
+	
+	@Transactional
+	@Override
+	public Optional<Usuario> delete(Long id) {
+		Optional<Usuario> userOptional = usuarioDao.findById(id);
+		userOptional.ifPresent(userDb -> {
+			usuarioDao.delete(userDb);
+		});
+		return userOptional;
+	}
 
 }
