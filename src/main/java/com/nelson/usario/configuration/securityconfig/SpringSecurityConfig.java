@@ -40,14 +40,17 @@ public class SpringSecurityConfig {
 
 	@Bean
 	SecurityFilterChain fiolterChain(HttpSecurity http) throws Exception {
-
 		return http
 				.authorizeHttpRequests(authz -> authz
-						.requestMatchers(HttpMethod.GET, "/api/users", "/api/users/page/{page}", "/api/products", "/api/propietarios").permitAll()
-						.requestMatchers(HttpMethod.POST, "/api/users/register", "/api/products/create").permitAll()
-						.requestMatchers(HttpMethod.DELETE, "/api/users/{id}", "/api/products/{id}").permitAll()
-						.requestMatchers(HttpMethod.GET, "/api/users/{id}", "/api/products/{id}").hasAnyRole("USER", "ADMIN")
-						.requestMatchers(HttpMethod.PUT, "/api/users/{id}", "/api/products/{id}").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, 	"/api/users", "/api/users/page/{page}", "/api/products/page/{page}",
+														 	"/api/propietarios/page/{page}","/api/products",
+															"/api/propietarios", "/api/vehiculos", "/api/ingresos").permitAll()
+						.requestMatchers(HttpMethod.POST, 	"/api/users/register", "/api/products/create", "/api/vehiculos/**",
+															"/api/propietarios/create", "/api/vehiculos/**").permitAll()
+						.requestMatchers(HttpMethod.DELETE, "/api/users/{id}", "/api/products/{id}",
+															"/api/propietarios/{id}", "/api/vehiculos/{id}").permitAll()
+						.requestMatchers(HttpMethod.GET, 	"/api/users/{id}", "/api/products/{id}").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.PUT, 	"/api/users/{id}", "/api/products/{id}").hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.cors(cors -> cors.configurationSource(configurationSource()))
 				.addFilter(new JwtAuthenticationFilter(authenticationManager()))
@@ -69,23 +72,6 @@ public class SpringSecurityConfig {
 		source.registerCorsConfiguration("/**", config);
 		return source;
 	}
-
-	/* @Bean
-	public CorsFilter corsFilter() {
-		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.setAllowCredentials(true);
-		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-		corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
-				"Accept", "Authorization", "Origin, Accept", "X-Requested-With", "Access-Control-Request-Method",
-				"Access-Control-Request-Headers"));
-		corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization",
-				"Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
-		corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-		return new CorsFilter(urlBasedCorsConfigurationSource);
-	} */
-
 	
 	@Bean FilterRegistrationBean<CorsFilter> corsFilter() {
 	 FilterRegistrationBean<CorsFilter> corsBean = new

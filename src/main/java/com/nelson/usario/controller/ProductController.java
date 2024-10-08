@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,14 +24,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nelson.usario.model.entity.Product;
+import com.nelson.usario.model.entity.Usuario;
 import com.nelson.usario.model.service.ProductService;
 
 
 
 import jakarta.validation.Valid;
 
-@RestController
 @CrossOrigin(origins = "http://localhost:4200", originPatterns = "*")
+@RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
@@ -38,6 +42,12 @@ public class ProductController {
 	@GetMapping
 	public List<Product> list() {
 		return service.findAll();
+	}
+
+	@GetMapping("/page/{page}")
+	public Page<Product> listPageable(@PathVariable Integer page) {
+		Pageable pageable = PageRequest.of(page, 5);
+		return service.findAll(pageable);
 	}
 
 	@GetMapping("/{id}")

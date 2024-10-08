@@ -15,8 +15,7 @@ public interface UsuarioDAO extends PagingAndSortingRepository<Usuario, Long>, C
 	boolean existsByUsername(String username);
 
 	Optional<Usuario> findByUsername(String username);
-
-	@SuppressWarnings("null")
+	
 	Page<Usuario> findAll(Pageable pageable);
 
 }
