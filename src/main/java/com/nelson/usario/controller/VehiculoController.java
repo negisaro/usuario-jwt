@@ -33,7 +33,7 @@ public class VehiculoController {
 		return vehiculoService.findAll();
 	}
 
-	@PostMapping("/register")
+	@PostMapping("/create")
 	public ResponseEntity<?> createVehiculo(@Valid @RequestBody Vehiculo vehiculo, BindingResult result) {
 		if (result.hasFieldErrors()) {
 			return validation(result);

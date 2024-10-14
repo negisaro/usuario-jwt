@@ -2,9 +2,14 @@ package com.nelson.usario.model.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.ArrayList;
 import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,7 +27,7 @@ import jakarta.validation.constraints.Past;
 
 @Entity
 @Table(name = "ingresos")
-public class Ingresos implements Serializable {  
+public class Ingresos implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,17 +47,21 @@ public class Ingresos implements Serializable {
     @NotEmpty
     private String descripcion;
 
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
     @JsonIgnoreProperties({ "ingresos", "handler", "hibernateLazyInitializer" })
     @ManyToMany
-    @JoinTable(name = "ingresos_vehiculos", joinColumns = @JoinColumn(name = "ingreso_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "vehiculo_id", referencedColumnName = "id"), uniqueConstraints = {
-            @UniqueConstraint(columnNames = { "ingreso_id", "vehiculo_id" }) })
-    private List<Vehiculo> vehiculos;
+    @JoinTable(name = "ingresos_vehiculos", joinColumns =
+    @JoinColumn(name = "ingreso_id", referencedColumnName = "id"), inverseJoinColumns = 
+    @JoinColumn(name = "vehiculo_id", referencedColumnName = "id"), uniqueConstraints =	{
+    @UniqueConstraint(columnNames = { "ingreso_id"})})
+    private Set<Vehiculo> vehiculos = new HashSet<>();;
 
-     public Ingresos() {
+    public Ingresos() {
+       // this.vehiculos = new ArrayList<>();
     }
 
     public Ingresos(Long id, Date fechaIngreso, Integer producidoDiario,
-            String descripcion, List<Vehiculo> vehiculos) {
+            String descripcion, Set<Vehiculo> vehiculos) {
         this.id = id;
         this.fechaIngreso = fechaIngreso;
         this.producidoDiario = producidoDiario;
@@ -92,13 +101,12 @@ public class Ingresos implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public List<Vehiculo> getVehiculos() {
+    public Set<Vehiculo> getVehiculos() {
         return vehiculos;
     }
 
-    public void setVehiculos(List<Vehiculo> vehiculos) {
+    public void setVehiculos(Set<Vehiculo> vehiculos) {
         this.vehiculos = vehiculos;
     }
 
-    
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nelson.usario.validation.ExistsByUsername;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -56,8 +55,10 @@ public class Usuario {
 
 	@JsonIgnoreProperties({ "users", "handler", "hibernateLazyInitializer" })
 	@ManyToMany
-	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id"), uniqueConstraints = {
-			@UniqueConstraint(columnNames = { "user_id", "rol_id" }) })
+	@JoinTable(name = "user_roles", joinColumns = 
+	@JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = 
+	@JoinColumn(name = "rol_id", referencedColumnName = "id"), uniqueConstraints = {
+	@UniqueConstraint(columnNames = { "user_id", "rol_id" }) })
 	private List<Rol> roles;
 
 	private boolean activo;

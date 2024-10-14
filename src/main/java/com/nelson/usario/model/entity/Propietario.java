@@ -1,5 +1,6 @@
 package com.nelson.usario.model.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +25,9 @@ import jakarta.validation.constraints.Past;
 
 @Entity
 @Table(name = "propietarios")
-public class Propietario {
+public class Propietario implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,7 +70,6 @@ public class Propietario {
 	@JsonIgnoreProperties({ "propietarios", "handler", "hibernateLazyInitializer" })
 	@OneToMany(mappedBy = "propietario", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Vehiculo> vehiculos;
-	
 
 	public Propietario() {
 		vehiculos = new ArrayList<>();

@@ -1,10 +1,18 @@
 package com.nelson.usario.model.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +20,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
@@ -23,16 +32,18 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "vehiculos")
-public class Vehiculo {
+public class Vehiculo implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotEmpty
+	@NotNull
 	private String placa;
 
-	@NotEmpty
+	@NotNull
 	private String marca;
 
 	@NotNull
@@ -41,29 +52,29 @@ public class Vehiculo {
 	@Temporal(TemporalType.DATE)
 	private Date modeloAnio;
 
-	@NotEmpty
+	@NotNull
 	private String modeloCarroceria;
 
-	@NotEmpty
-	private String tipoCombustible;
-
 	@NotNull
+	private String tipoCombustible;
+	
 	@JsonIgnoreProperties({ "vehiculos", "handler", "hibernateLazyInitializer" })
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "propietario_id", referencedColumnName = "id")
 	private Propietario propietario;
 
+	@JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
 	@JsonIgnoreProperties({ "vehiculos", "handler", "hibernateLazyInitializer" })
 	@ManyToMany(mappedBy = "vehiculos")
-	private List<Ingresos> ingresos;
+	private Set<Ingresos> ingresos = new HashSet<>();;
 
 	public Vehiculo() {
-		ingresos = new ArrayList<>();
+		//this.ingresos = new ArrayList<>();
 	}
 
-	public Vehiculo(Long id, String placa, String marca, Date modeloAnio, String modeloCarroceria,
-			String tipoCombustible, Propietario propietario) {
-
+	public Vehiculo(Long id, String placa, String marca, Date modeloAnio,
+			String modeloCarroceria, String tipoCombustible, Propietario propietario,
+			Set<Ingresos> ingresos) {
 		this.id = id;
 		this.placa = placa;
 		this.marca = marca;
@@ -71,6 +82,7 @@ public class Vehiculo {
 		this.modeloCarroceria = modeloCarroceria;
 		this.tipoCombustible = tipoCombustible;
 		this.propietario = propietario;
+		this.ingresos = ingresos;
 	}
 
 	@PrePersist
@@ -132,6 +144,14 @@ public class Vehiculo {
 
 	public void setPropietario(Propietario propietario) {
 		this.propietario = propietario;
+	}
+
+	public Set<Ingresos> getIngresos() {
+		return ingresos;
+	}
+
+	public void setIngresos(Set<Ingresos> ingresos) {
+		this.ingresos = ingresos;
 	}
 
 }
