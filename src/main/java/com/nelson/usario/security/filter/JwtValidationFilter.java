@@ -5,7 +5,6 @@ import static com.nelson.usario.security.TokenJwtConfig.CONTENT_TYPE;
 import static com.nelson.usario.security.TokenJwtConfig.HEADER_AUTHORIZATION;
 import static com.nelson.usario.security.TokenJwtConfig.PREFIX_TOKEN;
 import static com.nelson.usario.security.TokenJwtConfig.SECRET_KEY;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,7 +19,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nelson.usario.security.SimpleGrantedAuthorityJsonCreator;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

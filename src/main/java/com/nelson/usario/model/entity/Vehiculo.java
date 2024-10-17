@@ -3,15 +3,11 @@ package com.nelson.usario.model.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,14 +16,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -57,24 +50,26 @@ public class Vehiculo implements Serializable {
 
 	@NotNull
 	private String tipoCombustible;
-	
+
+	@NotNull
 	@JsonIgnoreProperties({ "vehiculos", "handler", "hibernateLazyInitializer" })
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "propietario_id", referencedColumnName = "id")
 	private Propietario propietario;
 
+	@NotNull
 	@JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
 	@JsonIgnoreProperties({ "vehiculos", "handler", "hibernateLazyInitializer" })
-	@ManyToMany(mappedBy = "vehiculos")
-	private Set<Ingresos> ingresos = new HashSet<>();;
+	@OneToMany(mappedBy = "vehiculo", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Ingresos> ingresos;
 
 	public Vehiculo() {
-		//this.ingresos = new ArrayList<>();
+		this.ingresos = new ArrayList<>();
 	}
 
 	public Vehiculo(Long id, String placa, String marca, Date modeloAnio,
 			String modeloCarroceria, String tipoCombustible, Propietario propietario,
-			Set<Ingresos> ingresos) {
+			List<Ingresos> ingresos) {
 		this.id = id;
 		this.placa = placa;
 		this.marca = marca;
@@ -83,11 +78,6 @@ public class Vehiculo implements Serializable {
 		this.tipoCombustible = tipoCombustible;
 		this.propietario = propietario;
 		this.ingresos = ingresos;
-	}
-
-	@PrePersist
-	public void prePersist() {
-		modeloAnio = new Date();
 	}
 
 	public Long getId() {
@@ -146,12 +136,79 @@ public class Vehiculo implements Serializable {
 		this.propietario = propietario;
 	}
 
-	public Set<Ingresos> getIngresos() {
+	public List<Ingresos> getIngresos() {
 		return ingresos;
 	}
 
-	public void setIngresos(Set<Ingresos> ingresos) {
+	public void setIngresos(List<Ingresos> ingresos) {
 		this.ingresos = ingresos;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((placa == null) ? 0 : placa.hashCode());
+		result = prime * result + ((marca == null) ? 0 : marca.hashCode());
+		result = prime * result + ((modeloAnio == null) ? 0 : modeloAnio.hashCode());
+		result = prime * result + ((modeloCarroceria == null) ? 0 : modeloCarroceria.hashCode());
+		result = prime * result + ((tipoCombustible == null) ? 0 : tipoCombustible.hashCode());
+		result = prime * result + ((propietario == null) ? 0 : propietario.hashCode());
+		result = prime * result + ((ingresos == null) ? 0 : ingresos.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Vehiculo other = (Vehiculo) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (placa == null) {
+			if (other.placa != null)
+				return false;
+		} else if (!placa.equals(other.placa))
+			return false;
+		if (marca == null) {
+			if (other.marca != null)
+				return false;
+		} else if (!marca.equals(other.marca))
+			return false;
+		if (modeloAnio == null) {
+			if (other.modeloAnio != null)
+				return false;
+		} else if (!modeloAnio.equals(other.modeloAnio))
+			return false;
+		if (modeloCarroceria == null) {
+			if (other.modeloCarroceria != null)
+				return false;
+		} else if (!modeloCarroceria.equals(other.modeloCarroceria))
+			return false;
+		if (tipoCombustible == null) {
+			if (other.tipoCombustible != null)
+				return false;
+		} else if (!tipoCombustible.equals(other.tipoCombustible))
+			return false;
+		if (propietario == null) {
+			if (other.propietario != null)
+				return false;
+		} else if (!propietario.equals(other.propietario))
+			return false;
+		if (ingresos == null) {
+			if (other.ingresos != null)
+				return false;
+		} else if (!ingresos.equals(other.ingresos))
+			return false;
+		return true;
 	}
 
 }

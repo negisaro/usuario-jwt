@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -67,6 +69,8 @@ public class Propietario implements Serializable {
 	@NotNull
 	private Date ingreso;
 
+	@NotNull
+	@JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
 	@JsonIgnoreProperties({ "propietarios", "handler", "hibernateLazyInitializer" })
 	@OneToMany(mappedBy = "propietario", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Vehiculo> vehiculos;
@@ -183,6 +187,99 @@ public class Propietario implements Serializable {
 
 	public void setVehiculos(List<Vehiculo> vehiculos) {
 		this.vehiculos = vehiculos;
+	}
+
+	@Override
+	public String toString() {
+		return "Propietario [id=" + id + ", documento=" + documento + ", primerNombre=" + primerNombre
+				+ ", segundoNombre=" + segundoNombre + ", primerApellido=" + primerApellido + ", segundoApellido="
+				+ segundoApellido + ", email=" + email + ", telefono=" + telefono + ", direccion=" + direccion
+				+ ", ingreso=" + ingreso + ", vehiculos=" + vehiculos + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((documento == null) ? 0 : documento.hashCode());
+		result = prime * result + ((primerNombre == null) ? 0 : primerNombre.hashCode());
+		result = prime * result + ((segundoNombre == null) ? 0 : segundoNombre.hashCode());
+		result = prime * result + ((primerApellido == null) ? 0 : primerApellido.hashCode());
+		result = prime * result + ((segundoApellido == null) ? 0 : segundoApellido.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((telefono == null) ? 0 : telefono.hashCode());
+		result = prime * result + ((direccion == null) ? 0 : direccion.hashCode());
+		result = prime * result + ((ingreso == null) ? 0 : ingreso.hashCode());
+		result = prime * result + ((vehiculos == null) ? 0 : vehiculos.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Propietario other = (Propietario) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (documento == null) {
+			if (other.documento != null)
+				return false;
+		} else if (!documento.equals(other.documento))
+			return false;
+		if (primerNombre == null) {
+			if (other.primerNombre != null)
+				return false;
+		} else if (!primerNombre.equals(other.primerNombre))
+			return false;
+		if (segundoNombre == null) {
+			if (other.segundoNombre != null)
+				return false;
+		} else if (!segundoNombre.equals(other.segundoNombre))
+			return false;
+		if (primerApellido == null) {
+			if (other.primerApellido != null)
+				return false;
+		} else if (!primerApellido.equals(other.primerApellido))
+			return false;
+		if (segundoApellido == null) {
+			if (other.segundoApellido != null)
+				return false;
+		} else if (!segundoApellido.equals(other.segundoApellido))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (telefono == null) {
+			if (other.telefono != null)
+				return false;
+		} else if (!telefono.equals(other.telefono))
+			return false;
+		if (direccion == null) {
+			if (other.direccion != null)
+				return false;
+		} else if (!direccion.equals(other.direccion))
+			return false;
+		if (ingreso == null) {
+			if (other.ingreso != null)
+				return false;
+		} else if (!ingreso.equals(other.ingreso))
+			return false;
+		if (vehiculos == null) {
+			if (other.vehiculos != null)
+				return false;
+		} else if (!vehiculos.equals(other.vehiculos))
+			return false;
+		return true;
 	}
 
 }

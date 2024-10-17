@@ -66,7 +66,7 @@ public class UserServiceImple implements UserService {
 
 	@Transactional(readOnly = true)
 	@Override
-	public Optional<Usuario> findById(@NonNull Long id) {
+	public Optional<Usuario> findById(Long id) {
 		return usuarioDao.findById(id);
 	}
 	

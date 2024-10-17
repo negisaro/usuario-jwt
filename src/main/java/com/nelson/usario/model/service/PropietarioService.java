@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.nelson.usario.model.entity.Propietario;
-import com.nelson.usario.model.entity.Usuario;
 
 
 public interface PropietarioService {

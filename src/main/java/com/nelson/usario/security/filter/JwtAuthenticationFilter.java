@@ -4,7 +4,6 @@ import static com.nelson.usario.security.TokenJwtConfig.CONTENT_TYPE;
 import static com.nelson.usario.security.TokenJwtConfig.HEADER_AUTHORIZATION;
 import static com.nelson.usario.security.TokenJwtConfig.PREFIX_TOKEN;
 import static com.nelson.usario.security.TokenJwtConfig.SECRET_KEY;
-
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;

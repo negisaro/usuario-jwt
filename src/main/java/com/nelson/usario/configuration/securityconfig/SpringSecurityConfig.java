@@ -43,12 +43,13 @@ public class SpringSecurityConfig {
 		return http
 				.authorizeHttpRequests(authz -> authz
 						.requestMatchers(HttpMethod.GET, 	"/api/users", "/api/users/page/{page}", "/api/products/page/{page}",
-														 	"/api/propietarios/page/{page}","/api/products",
-															"/api/propietarios", "/api/vehiculos", "/api/ingresos").permitAll()
+														 	"/api/propietarios/page/{page}","/api/products", "/api/vehiculos/{id}",
+															"/api/propietarios", "/api/vehiculos", "/api/ingresos", "/api/ingresos/{id}").permitAll()
 						.requestMatchers(HttpMethod.POST, 	"/api/users/register", "/api/products/create", "/api/vehiculos/create",
 															"/api/propietarios/create", "/api/ingresos/create").permitAll()
+						.requestMatchers(HttpMethod.PUT, 	"/api/vehiculos/{id}").permitAll()
 						.requestMatchers(HttpMethod.DELETE, "/api/users/{id}", "/api/products/{id}",
-															"/api/propietarios/{id}", "/api/vehiculos/{id}").permitAll()
+															"/api/propietarios/{id}", "/api/vehiculos/{id}", "/api/ingresos/{id}").permitAll()
 						.requestMatchers(HttpMethod.GET, 	"/api/users/{id}", "/api/products/{id}").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.PUT, 	"/api/users/{id}", "/api/products/{id}").hasRole("ADMIN")
 						.anyRequest().authenticated())

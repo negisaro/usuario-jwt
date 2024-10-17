@@ -18,7 +18,7 @@ public interface UserService {
 
 	Page<Usuario> findAll(Pageable pageable);
 
-	Optional<Usuario> findById(@NonNull Long id);
+	Optional<Usuario> findById(Long id);
 	
 	Optional<Usuario> delete(Long id);
 

@@ -2,25 +2,19 @@ package com.nelson.usario.model.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.ArrayList;
 import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -44,29 +38,38 @@ public class Ingresos implements Serializable {
     @NotNull
     private Integer producidoDiario;
 
+    @NotNull
+    private Integer vrLiquidacion;
+
+    @NotNull
+    private Integer vrGasolina;
+
+    @NotNull
+    private Integer vrGastosAdicionales;
+
     @NotEmpty
     private String descripcion;
 
-    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    @NotNull
     @JsonIgnoreProperties({ "ingresos", "handler", "hibernateLazyInitializer" })
-    @ManyToMany
-    @JoinTable(name = "ingresos_vehiculos", joinColumns =
-    @JoinColumn(name = "ingreso_id", referencedColumnName = "id"), inverseJoinColumns = 
-    @JoinColumn(name = "vehiculo_id", referencedColumnName = "id"), uniqueConstraints =	{
-    @UniqueConstraint(columnNames = { "ingreso_id"})})
-    private Set<Vehiculo> vehiculos = new HashSet<>();;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehiculo_id", referencedColumnName = "id")
+    private Vehiculo vehiculo;
 
     public Ingresos() {
-       // this.vehiculos = new ArrayList<>();
     }
 
     public Ingresos(Long id, Date fechaIngreso, Integer producidoDiario,
-            String descripcion, Set<Vehiculo> vehiculos) {
+            Integer vrLiquidacion, Integer vrGasolina, Integer vrGastosAdicionales,
+            String descripcion, Vehiculo vehiculo) {
         this.id = id;
         this.fechaIngreso = fechaIngreso;
         this.producidoDiario = producidoDiario;
+        this.vrLiquidacion = vrLiquidacion;
+        this.vrGasolina = vrGasolina;
+        this.vrGastosAdicionales = vrGastosAdicionales;
         this.descripcion = descripcion;
-        this.vehiculos = vehiculos;
+        this.vehiculo = vehiculo;
     }
 
     public Long getId() {
@@ -93,6 +96,30 @@ public class Ingresos implements Serializable {
         this.producidoDiario = producidoDiario;
     }
 
+    public Integer getVrLiquidacion() {
+        return vrLiquidacion;
+    }
+
+    public void setVrLiquidacion(Integer vrLiquidacion) {
+        this.vrLiquidacion = vrLiquidacion;
+    }
+
+    public Integer getVrGasolina() {
+        return vrGasolina;
+    }
+
+    public void setVrGasolina(Integer vrGasolina) {
+        this.vrGasolina = vrGasolina;
+    }
+
+    public Integer getVrGastosAdicionales() {
+        return vrGastosAdicionales;
+    }
+
+    public void setVrGastosAdicionales(Integer vrGastosAdicionales) {
+        this.vrGastosAdicionales = vrGastosAdicionales;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -101,12 +128,86 @@ public class Ingresos implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Set<Vehiculo> getVehiculos() {
-        return vehiculos;
+    public Vehiculo getVehiculo() {
+        return vehiculo;
     }
 
-    public void setVehiculos(Set<Vehiculo> vehiculos) {
-        this.vehiculos = vehiculos;
+    public void setVehiculo(Vehiculo vehiculo) {
+        this.vehiculo = vehiculo;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((fechaIngreso == null) ? 0 : fechaIngreso.hashCode());
+        result = prime * result + ((producidoDiario == null) ? 0 : producidoDiario.hashCode());
+        result = prime * result + ((vrLiquidacion == null) ? 0 : vrLiquidacion.hashCode());
+        result = prime * result + ((vrGasolina == null) ? 0 : vrGasolina.hashCode());
+        result = prime * result + ((vrGastosAdicionales == null) ? 0 : vrGastosAdicionales.hashCode());
+        result = prime * result + ((descripcion == null) ? 0 : descripcion.hashCode());
+        result = prime * result + ((vehiculo == null) ? 0 : vehiculo.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Ingresos other = (Ingresos) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (fechaIngreso == null) {
+            if (other.fechaIngreso != null)
+                return false;
+        } else if (!fechaIngreso.equals(other.fechaIngreso))
+            return false;
+        if (producidoDiario == null) {
+            if (other.producidoDiario != null)
+                return false;
+        } else if (!producidoDiario.equals(other.producidoDiario))
+            return false;
+        if (vrLiquidacion == null) {
+            if (other.vrLiquidacion != null)
+                return false;
+        } else if (!vrLiquidacion.equals(other.vrLiquidacion))
+            return false;
+        if (vrGasolina == null) {
+            if (other.vrGasolina != null)
+                return false;
+        } else if (!vrGasolina.equals(other.vrGasolina))
+            return false;
+        if (vrGastosAdicionales == null) {
+            if (other.vrGastosAdicionales != null)
+                return false;
+        } else if (!vrGastosAdicionales.equals(other.vrGastosAdicionales))
+            return false;
+        if (descripcion == null) {
+            if (other.descripcion != null)
+                return false;
+        } else if (!descripcion.equals(other.descripcion))
+            return false;
+        if (vehiculo == null) {
+            if (other.vehiculo != null)
+                return false;
+        } else if (!vehiculo.equals(other.vehiculo))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Ingresos [id=" + id + ", fechaIngreso=" + fechaIngreso + ", producidoDiario=" + producidoDiario
+                + ", vrLiquidacion=" + vrLiquidacion + ", vrGasolina=" + vrGasolina + ", vrGastosAdicionales="
+                + vrGastosAdicionales + ", descripcion=" + descripcion + ", vehiculo=" + vehiculo + "]";
     }
 
 }

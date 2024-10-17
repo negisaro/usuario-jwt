@@ -2,8 +2,6 @@ package com.nelson.usario.model.service;
 
 import java.util.List;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +12,6 @@ import com.nelson.usario.model.entity.Ingresos;
 
 @Service
 public class IngresoServiceImp implements IngresoService {
-
-	private static final Logger log = LoggerFactory.getLogger(IngresoServiceImp.class);
 
 	@Autowired
 	private IngresoRepository ingresoRepository;
@@ -42,7 +38,6 @@ public class IngresoServiceImp implements IngresoService {
 	@Override
 	public Ingresos save(Ingresos ingreso) {
 		return ingresoRepository.save(ingreso);
-
 	}
 
 	@Transactional
